@@ -20,7 +20,7 @@ namespace Unicorn.Timeline
     {
         protected abstract void OnCreate(PlayableGraph graph, GameObject owner, Playable playable);
 
-        protected abstract void ProcessFrame(Playable playable, FrameData info, object playerData);
+        protected abstract void OnProcessFrame(Playable playable, FrameData info, object playerData);
         
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
@@ -33,9 +33,9 @@ namespace Unicorn.Timeline
             return playable;
         }
 
-        internal void Internal_ProcessFrame(Playable playable, FrameData info, object playerData)
+        internal void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
-            ProcessFrame(playable, info, playerData);
+            OnProcessFrame(playable, info, playerData);
         }
         
         public virtual ClipCaps clipCaps => ClipCaps.None;

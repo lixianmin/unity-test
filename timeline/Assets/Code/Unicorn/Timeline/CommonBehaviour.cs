@@ -22,7 +22,7 @@ namespace Unicorn.Timeline
         
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
-            _clip.Internal_ProcessFrame(playable, info, playerData);
+            _clip.ProcessFrame(playable, info, playerData);
         }
 
         private ClipBase _clip;
