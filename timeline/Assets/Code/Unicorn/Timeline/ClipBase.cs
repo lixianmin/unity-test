@@ -1,3 +1,4 @@
+
 /********************************************************************
 created:    2022-09-08
 author:     lixianmin
@@ -5,10 +6,8 @@ author:     lixianmin
 Copyright (C) - All Rights Reserved
 *********************************************************************/
 
-using System;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.Timeline;
 
 namespace Unicorn.Timeline
 {
@@ -16,26 +15,30 @@ namespace Unicorn.Timeline
     /// 1. clip本身是一个PlayableAsset是一个ScriptableObject, 它没法存储Transform之类的field, 因此只能借助ExposedReference<Transform>曲线救国
     /// 2. ExposedReference自身也不存储数据, 真正的数据存储在graph中, 需要从graph中把数据解析出来
     /// </summary>
-    public abstract class ClipBase : PlayableAsset, ITimelineClipAsset
+    public abstract class ClipBase<T>  : PlayableAsset where T : class, IPlayableBehaviour, new()
     {
-        public Playable CreatePlayable<T>(PlayableGraph graph, GameObject owner, Action<T> handler) where T : class, IPlayableBehaviour, new()
+        public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
             var playable = ScriptPlayable<T>.Create(graph, new T());
             
             var behaviour = playable.GetBehaviour();
-            if (behaviour is BehaviourBase b)
+            if (behaviour is BehaviourBase item)
             {
-                b.clipStart = clipStart;
-                b.clipEnd = clipEnd;    
+                item.clipStart = clipStart;
+                item.clipEnd = clipEnd;    
             }
 
-            handler?.Invoke(behaviour);
+            OnCreate(graph, owner, playable, behaviour);
             return playable;
         }
-        
-        public virtual ClipCaps clipCaps => ClipCaps.None;
 
-        public double clipStart { get; internal set; }
-        public double clipEnd { get; internal set; }
+        /// <summary>
+        /// 这个方法主要用于把clip中得到的数据搬运到behaviour对象中
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="owner"></param>
+        /// <param name="playable"></param>
+        /// <param name="behaviour"></param>
+        protected abstract void OnCreate(PlayableGraph graph, GameObject owner, Playable playable, T behaviour);
     }
 }

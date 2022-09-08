@@ -48,19 +48,16 @@ namespace Client
         }
     }
     
-    public class TransformMoveClip: ClipBase
+    public class TransformMoveClip: ClipBase<TransformMoveBehaviour>
     {
         // clip中展现的可以在inspector中看到的变量
         public ExposedReference<Transform> startLocation;
         public ExposedReference<Transform> endLocation;
-
-        public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
+        
+        protected override void OnCreate(PlayableGraph graph, GameObject owner, Playable playable, TransformMoveBehaviour behaviour)
         {
-            return CreatePlayable<TransformMoveBehaviour>(graph, owner, behaviour =>
-            {
-                behaviour.startLocation = startLocation.Resolve(graph.GetResolver());
-                behaviour.endLocation = endLocation.Resolve(graph.GetResolver());
-            });
+            behaviour.startLocation = startLocation.Resolve(graph.GetResolver());
+            behaviour.endLocation = endLocation.Resolve(graph.GetResolver());
         }
     }
 
