@@ -14,7 +14,7 @@ namespace Unicorn
         {
             return new Hashtable(1)
             {
-                { "Client.PlayerMoveKit", (Func<KitBase>)(() => new Client.PlayerMoveKit()) },
+                { "Kits.PlayerMoveKit", (Func<KitBase>)(() => new Kits.PlayerMoveKit()) },
             };
         }
     }

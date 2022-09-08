@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Client
 {
-    public class MBGame: MonoBehaviour
+    public class MbGame: MonoBehaviour
     {
         private void Start()
         {

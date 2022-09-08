@@ -9,7 +9,7 @@ Copyright (C) - All Rights Reserved
 using Unicorn;
 using UnityEngine;
 
-namespace Client
+namespace Kits
 {
     public class PlayerMoveKit: KitBase
     {
@@ -19,7 +19,7 @@ namespace Client
             const float moveSpeed = 2.0f;
             var motion = transform.rotation * Vector3.forward * moveSpeed * Time.deltaTime;                
             transform.Translate(motion, Space.World);
-            Console.WriteLine(motion);
+            // Console.WriteLine(motion);
         }
     }
 }
