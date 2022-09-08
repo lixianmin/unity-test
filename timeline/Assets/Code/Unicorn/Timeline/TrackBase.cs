@@ -17,7 +17,7 @@ namespace Unicorn.Timeline
         {
             foreach (var clip in GetClips())
             {
-                if (clip.asset is PlayableAsset customClip)
+                if (clip.asset is ClipBase customClip)
                 {
                     customClip.clipStart= clip.start;
                     customClip.clipEnd = clip.end;
