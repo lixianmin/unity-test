@@ -18,9 +18,28 @@ namespace Client
         public Transform startLocation;
         public Transform endLocation;
 
+        public override void OnPlayableCreate(Playable playable)
+        {
+            Console.WriteLine("[OnPlayableCreate()]");
+        }
+        public override void OnGraphStart(Playable playable)
+        {
+            Console.WriteLine("[OnGraphStart()]");
+        }
+
+        public override void OnGraphStop(Playable playable)
+        {
+            Console.WriteLine("[OnGraphStop()]");
+        }
+        
+        public override void OnPlayableDestroy(Playable playable)
+        {
+            Console.WriteLine("[OnPlayableDestroy()]");
+        }
+
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
-            // Console.WriteLine($"playable={playable}, info={info}, playerData={playerData}");
+            Console.WriteLine($"playable={playable}, info={info}, playerData={playerData}");
             if (playerData is Transform player && startLocation is not null && endLocation is not null)
             {
                 var progress = playable.GetProcessEx();
@@ -37,12 +56,11 @@ namespace Client
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            var playable = CreatePlayable<TransformMoveBehaviour>(graph);
-            
-            var behaviour = playable.GetBehaviour();
-            behaviour.startLocation = startLocation.Resolve(graph.GetResolver());
-            behaviour.endLocation = endLocation.Resolve(graph.GetResolver());
-            return playable;
+            return CreatePlayable<TransformMoveBehaviour>(graph, owner, behaviour =>
+            {
+                behaviour.startLocation = startLocation.Resolve(graph.GetResolver());
+                behaviour.endLocation = endLocation.Resolve(graph.GetResolver());
+            });
         }
     }
 

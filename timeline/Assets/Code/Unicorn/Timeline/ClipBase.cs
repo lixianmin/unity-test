@@ -5,6 +5,8 @@ author:     lixianmin
 Copyright (C) - All Rights Reserved
 *********************************************************************/
 
+using System;
+using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -16,11 +18,24 @@ namespace Unicorn.Timeline
     /// </summary>
     public abstract class ClipBase : PlayableAsset, ITimelineClipAsset
     {
+        public Playable CreatePlayable<T>(PlayableGraph graph, GameObject owner, Action<T> handler) where T : class, IPlayableBehaviour, new()
+        {
+            var playable = ScriptPlayable<T>.Create(graph, new T());
+            
+            var behaviour = playable.GetBehaviour();
+            if (behaviour is BehaviourBase b)
+            {
+                b.clipStart = clipStart;
+                b.clipEnd = clipEnd;    
+            }
+
+            handler?.Invoke(behaviour);
+            return playable;
+        }
+        
         public virtual ClipCaps clipCaps => ClipCaps.None;
 
-        public static ScriptPlayable<T> CreatePlayable<T>(PlayableGraph graph) where T : class, IPlayableBehaviour, new()
-        {
-            return ScriptPlayable<T>.Create(graph, new T());
-        }
+        public double clipStart { get; internal set; }
+        public double clipEnd { get; internal set; }
     }
 }

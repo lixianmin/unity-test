@@ -16,6 +16,14 @@ namespace Unicorn.Timeline
     /// </summary>
     public abstract class BehaviourBase : PlayableBehaviour
     {
+        /// <summary>
+        /// clip的开始时间, 单位(s)
+        /// </summary>
+        public double clipStart { get; internal set; }
         
+        /// <summary>
+        /// clip的结束时间, 单位(s)
+        /// </summary>
+        public double clipEnd { get; internal set; }
     }
 }
