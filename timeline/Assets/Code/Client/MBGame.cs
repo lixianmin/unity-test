@@ -17,7 +17,6 @@ namespace Client
         {
             // 避免Game对象在场景切换的时候被干掉
             GameObject.DontDestroyOnLoad(gameObject);
-
             UnicornMain.Instance.Init();
         }
 
