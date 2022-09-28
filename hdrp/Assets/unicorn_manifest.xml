@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnicornManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <MakeAutoCode>false</MakeAutoCode>
+  <ClearAutoCode>false</ClearAutoCode>
+  <spriteDirPath>Assets/Art/UIResource/UI/Sprite</spriteDirPath>
+  <uiPrefabDirPath>Assets/prefabs/ui</uiPrefabDirPath>
+</UnicornManifest>
