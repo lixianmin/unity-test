@@ -4,7 +4,7 @@ import {get_product_list, getNftUrl} from "../tools/api";
 import {createStore, produce} from "solid-js/store";
 import {showNotification} from "./Notification";
 import {For} from "solid-js";
-import {Col, Container, Image, Row} from "solid-bootstrap";
+import {Badge, Col, Container, Image, Row} from "solid-bootstrap";
 
 
 /********************************************************************
@@ -50,15 +50,25 @@ export default function ProductList() {
                         <Row>{products.list.slice(columnIndex() * 3, (columnIndex() * 3) + 3).map((nft) => (
                             <Col xs={4}>
                                 <Image src={nft.src} rounded fluid/>
-                                <div>
-                                    <p>
-                                        <span>{nft.variant}</span>
-                                        <span>{nft.price}</span>
-                                    </p>
-                                    <p>
-                                        <span>{nft.name}</span>
-                                    </p>
+                                <div className="d-grid gap-2">
+                                    <div className="d-flex justify-content-between">
+                                        <div>
+                                            <Badge bg="info" class="align-self-center">{nft.id}</Badge>
+                                        </div>
+                                        <div>
+                                            <Badge
+                                                class="align-self-center justify-self-end bg-transparent border text-success">0.08
+                                                ETH</Badge>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex justify-content-start">
+                                        <div>
+                                            <Badge
+                                                class="align-self-center bg-transparent text-secondary">{nft.name}</Badge>
+                                        </div>
+                                    </div>
                                 </div>
+                                <p></p>
                             </Col>
                         ))}
                         </Row>
