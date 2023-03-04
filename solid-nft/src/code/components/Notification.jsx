@@ -12,7 +12,8 @@ import {createStore} from "solid-js/store";
 const [me, setMe] = createStore({visible: false, title: '', body: ''})
 
 export function showNotification(title, body) {
-    setMe({visible: true, title: title, body: body})
+    setMe({visible: true, title: title, body: body.toString()})
+    console.log(`title=${title}, body=${body}`)
 }
 
 export default function Notification() {

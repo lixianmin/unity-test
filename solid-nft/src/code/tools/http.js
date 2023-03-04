@@ -27,7 +27,7 @@ axios.defaults.baseURL = "http://43.143.205.159:8116/"; // 开发环境
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 1000000;
 
-// todo 如果我这里直接写，那么如果这个文件被引用多次的话，这些是不是会被重复执行多次？
+// 如果我这里直接写，那么如果这个文件被引用多次的话，这些是不是会被重复执行多次？答：不会
 // 设置默认提交json
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.put["Content-Type"] = "application/json";
@@ -39,7 +39,7 @@ axios.defaults.headers.put["Content-Type"] = "application/json";
  * @param {String} url [请求的url地址]
  * @param {Object} params [请求时携带的参数]
  */
-export function get(url, params) {
+export function get(url, params = null) {
     return new Promise((resolve, reject) => {
         axios.get(url, {params: params})
             .then((response) => {
