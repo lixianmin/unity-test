@@ -30,9 +30,10 @@ export default function () {
 
     onMount(() => {
         // When the user scrolls down 20px from the top of the document, show the button
-        window.addEventListener('scroll', ()=>{
+        window.addEventListener('scroll', () => {
             const threshold = 20
-            if (document.body.scrollTop > threshold || document.documentElement.scrollTop > threshold) {
+            const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+            if (scrollTop > threshold) {
                 backButton.style.display = "block";
             } else {
                 backButton.style.display = "none";
