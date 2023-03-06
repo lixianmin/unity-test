@@ -43,7 +43,7 @@ export default function ProductList() {
     })
 
     return <>
-        <ul>
+        <>
             <Container>
                 <For each={Array(products.columnNum)}>
                     {(column, columnIndex) => (
@@ -75,6 +75,6 @@ export default function ProductList() {
                     )}
                 </For>
             </Container>
-        </ul>
+        </>
     </>
 }

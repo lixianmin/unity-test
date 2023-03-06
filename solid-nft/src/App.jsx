@@ -7,6 +7,7 @@
  *********************************************************************/
 import Notification from "./code/components/Notification";
 import ProductList from "./code/components/ProductList";
+import BackToTop from "./code/components/BackToTop";
 
 async function init() {
     try {
@@ -22,5 +23,6 @@ export default function App() {
     return <>
         <ProductList/>
         <Notification/>
+        <BackToTop/>
     </>
 }
