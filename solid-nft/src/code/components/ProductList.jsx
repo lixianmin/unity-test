@@ -23,7 +23,7 @@ export default function ProductList() {
 
     const params = {
         page_num: products.pageNum,
-        page_size: 9,
+        page_size: 15,
         rare_level: 'R',
     };
 

@@ -28,17 +28,17 @@ const BackButton = styled.button(`
 export default function () {
     let backButton;
 
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function () {
-        const threshold = 20
-        if (document.body.scrollTop > threshold || document.documentElement.scrollTop > threshold) {
-            backButton.style.display = "block";
-        } else {
-            backButton.style.display = "none";
-        }
-    };
-
     onMount(() => {
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.addEventListener('scroll', ()=>{
+            const threshold = 20
+            if (document.body.scrollTop > threshold || document.documentElement.scrollTop > threshold) {
+                backButton.style.display = "block";
+            } else {
+                backButton.style.display = "none";
+            }
+        })
+
         backButton.addEventListener("click", () => {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
@@ -49,6 +49,5 @@ export default function () {
         <BackButton type="button" ref={backButton}>
             <i style='color:white; font-size:1.2rem'>↑</i>
         </BackButton>
-        <i className="fas fa-arrow-up"></i>
     </>
 }
