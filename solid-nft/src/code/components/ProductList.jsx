@@ -1,6 +1,6 @@
 'use strict'
 
-import {get_product_list, getNftUrl} from "../tools/api";
+import {get_product_list, getNftImageUrl} from "../tools/api";
 import {createStore, produce} from "solid-js/store";
 import {showNotification} from "./Notification";
 import {For} from "solid-js";
@@ -29,14 +29,13 @@ export default function ProductList() {
 
     get_product_list(params).then((response) => {
         setProducts(produce(async (state) => {
-            const products = response.data.products
-            products.map(async item => {
-                const src = await getNftUrl(item.id)
-                const result = {id: item.id, src: src, variant: item.variant, price: item.price, name: item.name}
-                state.list.push(result)
-
-                state.columnNum = Math.ceil(state.list.length / 3)
+            const list = response.data.products.map(item => {
+                const src = getNftImageUrl(item.id)
+                return {id: item.id, src: src, variant: item.variant, price: item.price, name: item.name}
             })
+
+            state.list.push(...list)
+            state.columnNum = Math.ceil(state.list.length / 3)
         }))
     }).catch((err) => {
         showNotification('错误', err)

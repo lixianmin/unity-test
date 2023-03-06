@@ -15,23 +15,20 @@ export const get_system_info = (p) => get("/api/v1/system/info", p) // 获取资
 export const get_product_list = (params) => get("/api/v1/product/list", params) // 商品列表
 export const get_product = (nft_id) => get(`/api/v1/product/${nft_id}`)
 
-async function getImageRootUrl() {
-    const key = 'imageRootUrl'
-    if (sessionStorage.getItem(key) === null) {
-        const response = await get_system_info()
-        if (response.code === 0) {
-            const url = `https://${response.data.bucket_url}/${response.data.nft_pic_path}`
-            sessionStorage.setItem(key, url)
-        } else {
-            sessionStorage.setItem(key, 'https://faked')
-            showNotification('错误', response.error)
-        }
-    }
+const nftImageRootUrlKey = 'nftRootUrl'
 
-    return sessionStorage.getItem(key)
+export async function initNftImageRootUrl(){
+    const response = await get_system_info()
+    if (response.code === 0) {
+        const url = `https://${response.data.bucket_url}/${response.data.nft_pic_path}`
+        localStorage.setItem(nftImageRootUrlKey, url)
+    } else {
+        localStorage.setItem(nftImageRootUrlKey, 'https://faked')
+        showNotification('错误', response.error)
+    }
 }
 
-export async function getNftUrl(nftId) {
-    const rootUrl = await getImageRootUrl()
+export function getNftImageUrl(nftId) {
+    const rootUrl = localStorage.getItem(nftImageRootUrlKey)
     return `${rootUrl}/${nftId}.jpg`
 }
