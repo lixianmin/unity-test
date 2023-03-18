@@ -1,3 +1,4 @@
+import threading
 import wave
 
 import pyaudio
@@ -40,9 +41,11 @@ class AudioRecorder:
             fout.writeframes(data)
 
 
+model = whisper.load_model('medium')
+
 def speech_to_text(filename):
     # Transcribe speech to text
-    model = whisper.load_model('medium')
+    global model
     whisper_audio = whisper.load_audio(filename)
     whisper_audio = whisper.pad_or_trim(whisper_audio)
 
@@ -59,15 +62,25 @@ def speech_to_text(filename):
 
 # Loop to continuously record and transcribe speech
 index = 0
+# lock = threading.Lock()
 while True:
     recorder = AudioRecorder()
+    print('waiting for record...')
     data = recorder.take_record()
 
     index += 1
+    print('output to wav file')
     filename = f"output{index}.wav"
     recorder.save(filename, data)
     recorder.close()
 
-    text = speech_to_text(filename)
+    print('transcribe...')
 
-    print(f"Text: {text}")
+    def print_text():
+        # lock.acquire()
+        text = speech_to_text(filename)
+        print(f"Text: {text}")
+        # lock.release()
+
+    t = threading.Thread(target=print_text)
+    t.start()
