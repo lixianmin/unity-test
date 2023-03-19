@@ -1,3 +1,4 @@
+import queue
 import threading
 import wave
 
@@ -41,11 +42,28 @@ class AudioRecorder:
             fout.writeframes(data)
 
 
-model = whisper.load_model('medium')
+class TaskQueue:
+    def __init__(self):
+        self._tasks = queue.Queue()
+        t = threading.Thread(target=self._run_tasks)
+        t.start()
+
+    def _run_tasks(self):
+        while True:
+            task = self._tasks.get()
+            task()
+            self._tasks.task_done()
+
+    def put(self, task):
+        if task is not None:
+            self._tasks.put(task)
+            return True
+        return False
+
 
 def speech_to_text(filename):
     # Transcribe speech to text
-    global model
+    model = whisper.load_model('medium')
     whisper_audio = whisper.load_audio(filename)
     whisper_audio = whisper.pad_or_trim(whisper_audio)
 
@@ -60,9 +78,10 @@ def speech_to_text(filename):
     return text
 
 
-# Loop to continuously record and transcribe speech
+taskQueue = TaskQueue()  # 定义任务队列
+taskQueue.put(lambda: whisper.load_model("medium"))  # 先加载一下模型，这个其实可能还挺慢的，特别是第一次加载的时候
+
 index = 0
-# lock = threading.Lock()
 while True:
     recorder = AudioRecorder()
     print('waiting for record...')
@@ -77,10 +96,7 @@ while True:
     print('transcribe...')
 
     def print_text():
-        # lock.acquire()
         text = speech_to_text(filename)
         print(f"Text: {text}")
-        # lock.release()
-
-    t = threading.Thread(target=print_text)
-    t.start()
+        
+    taskQueue.put(print_text)
